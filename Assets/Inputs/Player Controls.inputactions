@@ -120,6 +120,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Combat",
+            "id": "99f53f1f-5a3a-4e7d-9f96-65a5b54f3696",
+            "actions": [
+                {
+                    "name": "Main Fire",
+                    "type": "Button",
+                    "id": "a0bd66bf-5ef0-4d9c-b704-1c7964938c85",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Alternate Fire",
+                    "type": "Button",
+                    "id": "9694f791-1305-4af2-b5f8-463d2925e547",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5460f251-38bc-450c-ad33-8b0909734642",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Main Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3270b9db-9854-4026-9374-6547f70be360",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Alternate Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
