@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -11,6 +12,7 @@ public abstract class Gun : MonoBehaviour
 
     private GameObject projectileParent;
     private ObjectPool<Projectile> projectiles;
+    private Action initializer;
 
     private void OnEnable()
     {
@@ -22,8 +24,16 @@ public abstract class Gun : MonoBehaviour
                 projectile.gameObject.SetActive(false);
                 return projectile;
             },
-            projectile => projectile.gameObject.SetActive(true),
-            projectile => projectile.gameObject.SetActive(false),
+            projectile =>
+            {
+                projectile.gameObject.SetActive(true);
+            },
+            projectile =>
+            {
+                projectile.gameObject.SetActive(false);
+                Rigidbody rigidbody = projectile.GetComponent<Rigidbody>();
+                rigidbody.velocity = Vector3.zero;
+            },
             Destroy
         );
         
@@ -39,18 +49,28 @@ public abstract class Gun : MonoBehaviour
 
     private void InitializeProjectile(InputAction.CallbackContext _)
     {
-        Projectile projectile = projectiles.Get();
-        InitializeProjectile(projectile);
-        
-        projectile.Impact += ReleaseProjectile;
-        projectile.Expired += ReleaseProjectile;
-
-        void ReleaseProjectile()
+        initializer = () =>
         {
-            projectiles.Release(projectile);
-            projectile.Impact -= ReleaseProjectile;
-            projectile.Expired -= ReleaseProjectile;
-        }
+            Projectile projectile = projectiles.Get();
+            InitializeProjectile(projectile);
+
+            projectile.Impact += ReleaseProjectile;
+            projectile.Expired += ReleaseProjectile;
+
+            initializer = null;
+            
+            void ReleaseProjectile()
+            {
+                projectiles.Release(projectile);
+                projectile.Impact -= ReleaseProjectile;
+                projectile.Expired -= ReleaseProjectile;
+            }
+        };
+    }
+
+    private void FixedUpdate()
+    {
+        initializer?.Invoke();
     }
 
     protected abstract void InitializeProjectile(Projectile projectile);

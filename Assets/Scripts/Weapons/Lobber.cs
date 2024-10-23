@@ -12,7 +12,7 @@ public class Lobber : Gun
     
     protected override void InitializeProjectile(Projectile stickyBomb)
     {
-        stickyBomb.transform.position = projectileSource.position;
+        stickyBomb.Rigidbody.position = projectileSource.position;
         stickyBomb.Rigidbody.velocity = user.velocity + stickyBombVelocity * projectileSource.forward + stickyBombVerticalVelocity * Vector3.up;
     }
 }
