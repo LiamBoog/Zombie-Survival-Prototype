@@ -67,7 +67,7 @@ public class MovementController : MonoBehaviour
     private void Move()
     {
         Vector2 directionInput = move.action.ReadValue<Vector2>();
-        Vector3 targetDirection = transform.TransformDirection(new Vector3(directionInput.y, 0f, -directionInput.x));
+        Vector3 targetDirection = transform.TransformDirection(new Vector3(directionInput.x, 0f, directionInput.y));
         Vector3 targetVelocity = walkSpeed * targetDirection;
         
         Vector3 horizontalVelocity = Vector3.ProjectOnPlane(rigidbody.velocity, Vector3.up);
