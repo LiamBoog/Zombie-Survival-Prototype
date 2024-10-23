@@ -361,7 +361,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 4.1214, y: 4.1214, z: 4.1214}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -685,6 +685,7 @@ MonoBehaviour:
   rigidbody: {fileID: 841007387}
   walkSpeed: 10
   acceleration: 50
+  jumpHeight: 4
   move: {fileID: 6269550399385339001, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
   jump: {fileID: -6137543584031828948, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
 --- !u!1660057539 &9223372036854775807
