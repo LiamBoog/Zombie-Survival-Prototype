@@ -25,6 +25,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private new Rigidbody rigidbody;
     [SerializeField] private new CapsuleCollider collider;
     [SerializeField] private LayerMask groundCheckMask;
+    [SerializeField] private new FirstPersonCamera camera;
     
     [SerializeField] private float walkSpeed = 10f;
     [SerializeField] private float acceleration = 10f;
@@ -42,6 +43,14 @@ public class MovementController : MonoBehaviour
         jump.action.Enable();
 
         jump.action.performed += OnJump;
+    }
+    
+    private void OnDisable()
+    {
+        move.action.Disable();
+        jump.action.Disable();
+        
+        jump.action.performed -= OnJump;
     }
 
     private void OnJump(InputAction.CallbackContext _)
@@ -67,7 +76,8 @@ public class MovementController : MonoBehaviour
     private void Move()
     {
         Vector2 directionInput = move.action.ReadValue<Vector2>();
-        Vector3 targetDirection = transform.TransformDirection(new Vector3(directionInput.x, 0f, directionInput.y));
+        Vector3 forward = camera.HorizontalDirection;
+        Vector3 targetDirection = directionInput.y * forward + directionInput.x * Vector3.Cross(forward, Vector3.down);
         Vector3 targetVelocity = walkSpeed * targetDirection;
         
         Vector3 horizontalVelocity = Vector3.ProjectOnPlane(rigidbody.velocity, Vector3.up);
@@ -89,13 +99,5 @@ public class MovementController : MonoBehaviour
     private void OnCollisionEnter(Collision _)
     {
         appliedJumpBuffer = GroundCheck() && jumpBuffer.Flush();
-    }
-
-    private void OnDisable()
-    {
-        move.action.Disable();
-        jump.action.Disable();
-        
-        jump.action.performed -= OnJump;
     }
 }

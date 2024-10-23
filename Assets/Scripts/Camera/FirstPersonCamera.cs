@@ -10,6 +10,8 @@ public class FirstPersonCamera : MonoBehaviour
 
     [SerializeField] private InputActionReference aim;
 
+    public Vector3 HorizontalDirection => Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+
     private void OnEnable()
     {
         Cursor.visible = false;
@@ -22,7 +24,7 @@ public class FirstPersonCamera : MonoBehaviour
         aim.action.Disable();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         Move();
         Rotate();
