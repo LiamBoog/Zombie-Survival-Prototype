@@ -92,6 +92,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Camera",
+            "id": "4f8dadef-841f-4911-804e-4485bf7bfadf",
+            "actions": [
+                {
+                    "name": "Aim",
+                    "type": "Value",
+                    "id": "eca1ce7f-37c1-42f3-ba84-9b5802f40f6b",
+                    "expectedControlType": "Delta",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b7ba218c-70ef-453f-9451-56f520a619fd",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
