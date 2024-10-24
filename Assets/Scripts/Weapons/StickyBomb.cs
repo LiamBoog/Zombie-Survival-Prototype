@@ -1,16 +1,43 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class StickyBomb : Projectile
+public class StickyBomb : ExplosiveProjectile
 {
-    protected override void Initialize()
+    [SerializeField] private float countDownDuration = 2f;
+
+    public override void Initialize()
     {
-        
+        base.Initialize();
+        Impact += OnImpact;
     }
 
-    protected override void Deinitialize()
+    public override void Deinitialize()
     {
+        Impact -= OnImpact;
+    }
+
+    private void OnImpact(ImpactInfo impactInfo)
+    {
+        StickToSurface(impactInfo);
+        StartCoroutine(CountdownRoutine(impactInfo));
+    }
+
+    private void StickToSurface(ImpactInfo impactInfo)
+    {
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.isKinematic = true;
+
+        transform.position = impactInfo.point;
+        transform.parent = impactInfo.target;
+    }
+
+    private IEnumerator CountdownRoutine(ImpactInfo impactInfo)
+    {
+        yield return new WaitForSeconds(countDownDuration);
         
+        SplashDamage(impactInfo.point);
+        KnockBack(impactInfo.point);
+        Expire();
     }
 }

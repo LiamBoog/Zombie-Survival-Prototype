@@ -4,9 +4,15 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(Rigidbody))]
 public abstract class Projectile : MonoBehaviour
 {
+    public struct ImpactInfo
+    {
+        public Vector3 point;
+        public Transform target;
+    }
+    
     [SerializeField] private float lifetime = 5f;
     
-    public event Action<Vector3> Impact;
+    public event Action<ImpactInfo> Impact;
     public event Action Expired;
 
     private float remainingLife;
@@ -24,25 +30,12 @@ public abstract class Projectile : MonoBehaviour
         }
     }
 
-    protected abstract void Initialize();
-    protected abstract void Deinitialize();
-    
-    public void OnGet()
+    public virtual void Initialize()
     {
-        gameObject.SetActive(true);
         remainingLife = lifetime;
-        
-        Initialize();
     }
+    public abstract void Deinitialize();
 
-    public void OnRelease()
-    {
-        gameObject.SetActive(false);
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        
-        Deinitialize();
-    }
-    
     private void Update()
     {
         remainingLife -= Time.deltaTime;
@@ -50,11 +43,20 @@ public abstract class Projectile : MonoBehaviour
         if (remainingLife > 0f)
             return;
         
-        Expired?.Invoke();
+        Expire();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Impact?.Invoke(collision.GetContact(0).point);
+        Impact?.Invoke(new ImpactInfo
+        {
+            point = collision.GetContact(0).point,
+            target = collision.transform
+        });
+    }
+
+    protected void Expire()
+    {
+        Expired?.Invoke();
     }
 }

@@ -185,6 +185,9 @@ MonoBehaviour:
     type: 3}
   fire: {fileID: -1374206435882733207, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
   projectileSource: {fileID: 7036495596733792959}
+  projectileCollisionMask:
+    serializedVersion: 2
+    m_Bits: 640
   user: {fileID: 0}
   stickyBombVelocity: 20
   stickyBombVerticalVelocity: 10

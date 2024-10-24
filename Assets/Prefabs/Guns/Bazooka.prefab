@@ -103,10 +103,13 @@ MonoBehaviour:
   projectileSource: {fileID: 5739441849771406807}
   projectileCollisionMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   camera: {fileID: 0}
   rocketVelocity: 25
   rayCastDistance: 100
+  rayCastMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &5898123792024275434
 GameObject:
   m_ObjectHideFlags: 0

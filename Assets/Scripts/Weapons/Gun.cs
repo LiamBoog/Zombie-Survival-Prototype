@@ -27,35 +27,38 @@ public abstract class Gun : MonoBehaviour
             },
             projectile =>
             {
+                projectile.gameObject.SetActive(true);
                 projectile.CollisionMask = projectileCollisionMask;
-                projectile.OnGet();
+                projectile.Initialize();
             },
             projectile =>
             {
-                projectile.OnRelease();
+                projectile.gameObject.SetActive(false);
+                Rigidbody rigidbody = projectile.GetComponent<Rigidbody>();
+                rigidbody.isKinematic = false;
+                rigidbody.velocity = Vector3.zero;
+                projectile.Deinitialize();
             },
             Destroy
         );
         
         fire.action.Enable();
-        fire.action.performed += InitializeProjectile;
+        fire.action.performed += SpawnProjectile;
     }
 
     private void OnDisable()
     {
         fire.action.Disable();
-        fire.action.performed -= InitializeProjectile;
+        fire.action.performed -= SpawnProjectile;
     }
 
-    private void InitializeProjectile(InputAction.CallbackContext _)
+    private void SpawnProjectile(InputAction.CallbackContext _)
     {
         initializer = () =>
         {
             Projectile projectile = projectiles.Get();
             InitializeProjectile(projectile);
 
-            void OnImpact(Vector3 _) => ReleaseProjectile();
-            projectile.Impact += OnImpact;
             projectile.Expired += ReleaseProjectile;
 
             initializer = null;
@@ -63,7 +66,6 @@ public abstract class Gun : MonoBehaviour
             void ReleaseProjectile()
             {
                 projectiles.Release(projectile);
-                projectile.Impact -= OnImpact;
                 projectile.Expired -= ReleaseProjectile;
             }
         };

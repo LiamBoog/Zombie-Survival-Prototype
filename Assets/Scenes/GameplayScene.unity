@@ -891,6 +891,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5877511752899607692, guid: 30f1fdd3c0e148d4988020312c39a605,
+        type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 9122714773140893617, guid: c0e05d7e814e7ed46855f5941ac2c5c2,
+        type: 3}
+    - target: {fileID: 5877511752899607692, guid: 30f1fdd3c0e148d4988020312c39a605,
+        type: 3}
+      propertyPath: projectileCollisionMask.m_Bits
+      value: 640
+      objectReference: {fileID: 0}
     - target: {fileID: 6549076589122931566, guid: 30f1fdd3c0e148d4988020312c39a605,
         type: 3}
       propertyPath: m_LocalPosition.x
