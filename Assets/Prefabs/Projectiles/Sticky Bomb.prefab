@@ -136,8 +136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 5
+  damage: 50
   splashRadius: 10
-  damage: 100
+  knockback: 0
   countDownDuration: 2
 --- !u!135 &8277429573274204909
 SphereCollider:

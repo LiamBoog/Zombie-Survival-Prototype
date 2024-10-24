@@ -40,4 +40,11 @@ public class StickyBomb : ExplosiveProjectile
         KnockBack(impactInfo.point);
         Expire();
     }
+
+    protected override float ComputeSplashDamage(Vector3 center, Vector3 target)
+    {
+        float distance = Vector3.Distance(target, center);
+        float damageFallOff = -(1f - minDamageFallOff) * (distance - splashRadius) / splashRadius + minDamageFallOff;
+        return damageFallOff * damage;
+    }
 }

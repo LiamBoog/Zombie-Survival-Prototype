@@ -1,4 +1,4 @@
-using System;
+using UnityEngine;
 
 public class Rocket : ExplosiveProjectile
 {
@@ -19,5 +19,12 @@ public class Rocket : ExplosiveProjectile
         KnockBack(impactInfo.point);
 
         Expire();
+    }
+
+    protected override float ComputeSplashDamage(Vector3 center, Vector3 target)
+    {
+        float distance = Vector3.Distance(target, center);
+        float damageFallOff = (1f - minDamageFallOff) * Mathf.Pow(distance - splashRadius, 2f) / (splashRadius * splashRadius) + minDamageFallOff;
+        return damageFallOff * damage;
     }
 }
