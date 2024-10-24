@@ -97,12 +97,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef456a232f189d4c8272d85acc498f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 5990884862697683791, guid: 12b37e3f545ec1b4aae5db36bae5c900,
+  projectilePrefab: {fileID: 6705182376876522230, guid: 12b37e3f545ec1b4aae5db36bae5c900,
     type: 3}
   fire: {fileID: -3047908182259645644, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
   projectileSource: {fileID: 5739441849771406807}
+  projectileCollisionMask:
+    serializedVersion: 2
+    m_Bits: 128
   camera: {fileID: 0}
   rocketVelocity: 25
+  rayCastDistance: 100
 --- !u!1 &5898123792024275434
 GameObject:
   m_ObjectHideFlags: 0

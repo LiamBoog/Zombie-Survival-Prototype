@@ -9,6 +9,7 @@ public abstract class Gun : MonoBehaviour
     [SerializeField] private InputActionReference fire;
 
     [SerializeField] protected Transform projectileSource;
+    [SerializeField] protected LayerMask projectileCollisionMask;
 
     private GameObject projectileParent;
     private ObjectPool<Projectile> projectiles;
@@ -26,13 +27,12 @@ public abstract class Gun : MonoBehaviour
             },
             projectile =>
             {
-                projectile.gameObject.SetActive(true);
+                projectile.CollisionMask = projectileCollisionMask;
+                projectile.OnGet();
             },
             projectile =>
             {
-                projectile.gameObject.SetActive(false);
-                Rigidbody rigidbody = projectile.GetComponent<Rigidbody>();
-                rigidbody.velocity = Vector3.zero;
+                projectile.OnRelease();
             },
             Destroy
         );
@@ -54,7 +54,8 @@ public abstract class Gun : MonoBehaviour
             Projectile projectile = projectiles.Get();
             InitializeProjectile(projectile);
 
-            projectile.Impact += ReleaseProjectile;
+            void OnImpact(Vector3 _) => ReleaseProjectile();
+            projectile.Impact += OnImpact;
             projectile.Expired += ReleaseProjectile;
 
             initializer = null;
@@ -62,7 +63,7 @@ public abstract class Gun : MonoBehaviour
             void ReleaseProjectile()
             {
                 projectiles.Release(projectile);
-                projectile.Impact -= ReleaseProjectile;
+                projectile.Impact -= OnImpact;
                 projectile.Expired -= ReleaseProjectile;
             }
         };

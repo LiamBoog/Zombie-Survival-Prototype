@@ -2,22 +2,47 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(Rigidbody))]
-public class Projectile : MonoBehaviour
+public abstract class Projectile : MonoBehaviour
 {
     [SerializeField] private float lifetime = 5f;
     
-    public Rigidbody Rigidbody => GetComponent<Rigidbody>();
-    
-    public event Action Impact;
+    public event Action<Vector3> Impact;
     public event Action Expired;
 
     private float remainingLife;
+    private LayerMask targetMask;
+    
+    public Rigidbody Rigidbody => GetComponent<Rigidbody>();
 
-    private void OnEnable()
+    public LayerMask CollisionMask
     {
-        remainingLife = lifetime;
+        set
+        {
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            rigidbody.includeLayers = value;
+            rigidbody.excludeLayers = ~value;
+        }
     }
 
+    protected abstract void Initialize();
+    protected abstract void Deinitialize();
+    
+    public void OnGet()
+    {
+        gameObject.SetActive(true);
+        remainingLife = lifetime;
+        
+        Initialize();
+    }
+
+    public void OnRelease()
+    {
+        gameObject.SetActive(false);
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        
+        Deinitialize();
+    }
+    
     private void Update()
     {
         remainingLife -= Time.deltaTime;
@@ -28,8 +53,8 @@ public class Projectile : MonoBehaviour
         Expired?.Invoke();
     }
 
-    private void OnCollisionEnter(Collision _)
+    private void OnCollisionEnter(Collision collision)
     {
-        Impact?.Invoke();
+        Impact?.Invoke(collision.GetContact(0).point);
     }
 }
