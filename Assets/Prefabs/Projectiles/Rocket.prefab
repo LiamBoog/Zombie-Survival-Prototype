@@ -167,4 +167,4 @@ MonoBehaviour:
   damage: 25
   minDamageFallOff: 0.5
   splashRadius: 5
-  knockback: 0
+  knockback: 10
