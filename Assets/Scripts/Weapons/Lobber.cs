@@ -5,11 +5,10 @@ public class Lobber : Gun
     [SerializeField] private Rigidbody user;
     
     [SerializeField] private float stickyBombVelocity = 20f;
-    [SerializeField] private float stickyBombVerticalVelocity = 20f;
     
     protected override void InitializeProjectile(Projectile stickyBomb)
     {
         stickyBomb.Rigidbody.position = projectileSource.position;
-        stickyBomb.Rigidbody.velocity = user.velocity + stickyBombVelocity * projectileSource.forward + stickyBombVerticalVelocity * Vector3.up;
+        stickyBomb.Rigidbody.velocity = user.velocity + stickyBombVelocity * projectileSource.forward;
     }
 }
