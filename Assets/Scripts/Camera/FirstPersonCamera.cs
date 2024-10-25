@@ -15,6 +15,7 @@ public class FirstPersonCamera : MonoBehaviour
     private void OnEnable()
     {
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         aim.action.Enable();
     }
 
