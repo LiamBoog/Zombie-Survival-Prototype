@@ -33,8 +33,14 @@ public abstract class Projectile : MonoBehaviour
     public virtual void Initialize()
     {
         remainingLife = lifetime;
+        Impact += OnImpact;
     }
-    public abstract void Deinitialize();
+
+    public virtual void Deinitialize()
+    {
+        StopAllCoroutines();
+        Impact -= OnImpact;
+    }
 
     private void Update()
     {
@@ -58,5 +64,10 @@ public abstract class Projectile : MonoBehaviour
     protected void Expire()
     {
         Expired?.Invoke();
+    }
+
+    private void OnImpact(ImpactInfo _)
+    {
+        GetComponent<MeshRenderer>().enabled = true;
     }
 }

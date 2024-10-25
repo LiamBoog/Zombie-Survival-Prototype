@@ -13,6 +13,7 @@ public class StickyBomb : ExplosiveProjectile
 
     public override void Deinitialize()
     {
+        base.Deinitialize();
         GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Interpolate;
         Impact -= OnImpact;
     }

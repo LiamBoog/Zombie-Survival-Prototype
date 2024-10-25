@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -9,9 +12,11 @@ public abstract class Gun : MonoBehaviour
 
     [SerializeField] protected Transform projectileSource;
     [SerializeField] protected LayerMask projectileCollisionMask;
+    [SerializeField] private float minTravelDistance = 1f;
 
     private GameObject projectileParent;
     private ObjectPool<Projectile> projectilePool;
+    private Action onFixedUpdate;
 
     private void OnEnable()
     {
@@ -38,6 +43,7 @@ public abstract class Gun : MonoBehaviour
     private void OnGetProjectile(Projectile projectile)
     {
         projectile.gameObject.SetActive(true);
+        projectile.GetComponent<MeshRenderer>().enabled = false;
         projectile.transform.parent = projectileParent.transform;
         projectile.CollisionMask = projectileCollisionMask;
         projectile.Initialize();
@@ -54,16 +60,37 @@ public abstract class Gun : MonoBehaviour
     
     private void SpawnProjectile(InputAction.CallbackContext _)
     {
-        Projectile projectile = projectilePool.Get();
-        InitializeProjectile(projectile);
-        projectile.Expired += ReleaseProjectile;
-
-        void ReleaseProjectile()
+        onFixedUpdate += () =>
         {
-            projectilePool.Release(projectile);
-            projectile.Expired -= ReleaseProjectile;
-        }
+            Projectile projectile = projectilePool.Get();
+            projectile.StartCoroutine(DelayVisibility());
+            InitializeProjectile(projectile);
+            projectile.Expired += ReleaseProjectile;
+
+            void ReleaseProjectile()
+            {
+                projectilePool.Release(projectile);
+                projectile.Expired -= ReleaseProjectile;
+            }
+
+            IEnumerator DelayVisibility()
+            {
+                yield return null;
+                while (Vector3.Distance(projectileSource.position, projectile.transform.position) < minTravelDistance)
+                {
+                    yield return null;
+                }
+
+                projectile.GetComponent<MeshRenderer>().enabled = true;
+            }
+        };
     }
 
     protected abstract void InitializeProjectile(Projectile projectile);
+
+    private void FixedUpdate()
+    {
+        onFixedUpdate?.Invoke();
+        onFixedUpdate = null;
+    }
 }

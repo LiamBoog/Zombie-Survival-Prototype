@@ -10,6 +10,7 @@ public class Rocket : ExplosiveProjectile
 
     public override void Deinitialize()
     {
+        base.Deinitialize();;
         Impact -= OnImpact;
     }
 

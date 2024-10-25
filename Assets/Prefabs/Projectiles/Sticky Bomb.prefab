@@ -140,7 +140,7 @@ MonoBehaviour:
   minDamageFallOff: 0
   splashRadius: 10
   knockback: 7
-  countDownDuration: 2
+  countDownDuration: 1
 --- !u!135 &8277429573274204909
 SphereCollider:
   m_ObjectHideFlags: 0

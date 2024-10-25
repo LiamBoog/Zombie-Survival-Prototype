@@ -10,19 +10,13 @@ public class Bazooka : Gun
     protected override void InitializeProjectile(Projectile rocket)
     {
         Ray ray = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f));
-        Vector3 target;
-        if (Physics.Raycast(ray, out RaycastHit hit, rayCastDistance, projectileCollisionMask))
-        {
-            target = hit.point;
-        }
-        else
-        {
-            target = ray.origin + rayCastDistance * ray.direction;
-        }
-        
-        rocket.transform.position = projectileSource.position;
+        Vector3 target = Physics.Raycast(ray, out RaycastHit hit, rayCastDistance, projectileCollisionMask) ?
+            hit.point :
+            ray.origin + rayCastDistance * ray.direction;
+
+        rocket.Rigidbody.position = projectileSource.position;
         Vector3 rocketDirection = (target - projectileSource.position).normalized;
-        rocket.transform.rotation = Quaternion.LookRotation(rocketDirection) * Quaternion.Euler(90f, 0f, 0f);
+        rocket.Rigidbody.rotation = Quaternion.LookRotation(rocketDirection) * Quaternion.Euler(90f, 0f, 0f);
         rocket.Rigidbody.velocity = rocketVelocity * rocketDirection;
     }
 }
