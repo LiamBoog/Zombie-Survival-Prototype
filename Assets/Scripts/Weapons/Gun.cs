@@ -11,12 +11,12 @@ public abstract class Gun : MonoBehaviour
     [SerializeField] protected LayerMask projectileCollisionMask;
 
     private GameObject projectileParent;
-    private ObjectPool<Projectile> projectiles;
+    private ObjectPool<Projectile> projectilePool;
 
     private void OnEnable()
     {
         projectileParent = new GameObject($"{name} Projectiles");
-        projectiles = new ObjectPool<Projectile>(CreateProjectile, OnGetProjectile, OnReleaseProjectile, Destroy);
+        projectilePool = new ObjectPool<Projectile>(CreateProjectile, OnGetProjectile, OnReleaseProjectile, Destroy);
         
         fire.action.Enable();
         fire.action.performed += SpawnProjectile;
@@ -53,13 +53,13 @@ public abstract class Gun : MonoBehaviour
     
     private void SpawnProjectile(InputAction.CallbackContext _)
     {
-        Projectile projectile = projectiles.Get();
+        Projectile projectile = projectilePool.Get();
         InitializeProjectile(projectile);
         projectile.Expired += ReleaseProjectile;
 
         void ReleaseProjectile()
         {
-            projectiles.Release(projectile);
+            projectilePool.Release(projectile);
             projectile.Expired -= ReleaseProjectile;
         }
     }
