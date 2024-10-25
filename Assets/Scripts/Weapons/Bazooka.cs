@@ -20,7 +20,7 @@ public class Bazooka : Gun
             target = ray.origin + rayCastDistance * ray.direction;
         }
         
-        rocket.Rigidbody.position = projectileSource.position;
+        rocket.transform.position = projectileSource.position;
         Vector3 rocketDirection = (target - projectileSource.position).normalized;
         rocket.transform.rotation = Quaternion.LookRotation(rocketDirection) * Quaternion.Euler(90f, 0f, 0f);
         rocket.Rigidbody.velocity = rocketVelocity * rocketDirection;

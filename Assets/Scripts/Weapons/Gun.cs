@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -13,34 +12,11 @@ public abstract class Gun : MonoBehaviour
 
     private GameObject projectileParent;
     private ObjectPool<Projectile> projectiles;
-    private Action initializer;
 
     private void OnEnable()
     {
         projectileParent = new GameObject($"{name} Projectiles");
-        projectiles = new ObjectPool<Projectile>(
-            () =>
-            {
-                Projectile projectile = Instantiate(projectilePrefab, projectileParent.transform);
-                projectile.gameObject.SetActive(false);
-                return projectile;
-            },
-            projectile =>
-            {
-                projectile.gameObject.SetActive(true);
-                projectile.CollisionMask = projectileCollisionMask;
-                projectile.Initialize();
-            },
-            projectile =>
-            {
-                projectile.gameObject.SetActive(false);
-                Rigidbody rigidbody = projectile.GetComponent<Rigidbody>();
-                rigidbody.isKinematic = false;
-                rigidbody.velocity = Vector3.zero;
-                projectile.Deinitialize();
-            },
-            Destroy
-        );
+        projectiles = new ObjectPool<Projectile>(CreateProjectile, OnGetProjectile, OnReleaseProjectile, Destroy);
         
         fire.action.Enable();
         fire.action.performed += SpawnProjectile;
@@ -52,28 +28,40 @@ public abstract class Gun : MonoBehaviour
         fire.action.performed -= SpawnProjectile;
     }
 
-    private void SpawnProjectile(InputAction.CallbackContext _)
+    private Projectile CreateProjectile()
     {
-        initializer = () =>
-        {
-            Projectile projectile = projectiles.Get();
-            InitializeProjectile(projectile);
-
-            projectile.Expired += ReleaseProjectile;
-
-            initializer = null;
-            
-            void ReleaseProjectile()
-            {
-                projectiles.Release(projectile);
-                projectile.Expired -= ReleaseProjectile;
-            }
-        };
+        Projectile output = Instantiate(projectilePrefab, projectileParent.transform);
+        output.gameObject.SetActive(false);
+        return output;
     }
 
-    private void FixedUpdate()
+    private void OnGetProjectile(Projectile projectile)
     {
-        initializer?.Invoke();
+        projectile.gameObject.SetActive(true);
+        projectile.CollisionMask = projectileCollisionMask;
+        projectile.Initialize();
+    }
+
+    private void OnReleaseProjectile(Projectile projectile)
+    {
+        projectile.gameObject.SetActive(false);
+        Rigidbody rigidbody = projectile.GetComponent<Rigidbody>();
+        rigidbody.isKinematic = false;
+        rigidbody.velocity = Vector3.zero;
+        projectile.Deinitialize();
+    }
+    
+    private void SpawnProjectile(InputAction.CallbackContext _)
+    {
+        Projectile projectile = projectiles.Get();
+        InitializeProjectile(projectile);
+        projectile.Expired += ReleaseProjectile;
+
+        void ReleaseProjectile()
+        {
+            projectiles.Release(projectile);
+            projectile.Expired -= ReleaseProjectile;
+        }
     }
 
     protected abstract void InitializeProjectile(Projectile projectile);
