@@ -38,6 +38,7 @@ public abstract class Gun : MonoBehaviour
     private void OnGetProjectile(Projectile projectile)
     {
         projectile.gameObject.SetActive(true);
+        projectile.transform.parent = projectileParent.transform;
         projectile.CollisionMask = projectileCollisionMask;
         projectile.Initialize();
     }
