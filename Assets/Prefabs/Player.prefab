@@ -928,6 +928,11 @@ PrefabInstance:
       objectReference: {fileID: 7895278848267330580}
     - target: {fileID: 7046291389076203101, guid: 7ac8475bc32e2b9448271b67ce66e29b,
         type: 3}
+      propertyPath: userTransform
+      value: 
+      objectReference: {fileID: 2202497578224490089}
+    - target: {fileID: 7046291389076203101, guid: 7ac8475bc32e2b9448271b67ce66e29b,
+        type: 3}
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 9122714773140893617, guid: c0e05d7e814e7ed46855f5941ac2c5c2,

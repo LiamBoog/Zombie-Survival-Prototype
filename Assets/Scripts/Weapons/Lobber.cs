@@ -3,12 +3,14 @@ using UnityEngine;
 public class Lobber : Gun
 {
     [SerializeField] private Rigidbody user;
+    [SerializeField] private Transform userTransform;
     
     [SerializeField] private float stickyBombVelocity = 20f;
     
     protected override void InitializeProjectile(Projectile stickyBomb)
     {
         stickyBomb.transform.position = projectileSource.position;
-        stickyBomb.Rigidbody.velocity = user.velocity + stickyBombVelocity * projectileSource.forward;
+        Vector3 userVelocity = Vector3.ProjectOnPlane(user.velocity, userTransform.right);
+        stickyBomb.Rigidbody.velocity = userVelocity + stickyBombVelocity * projectileSource.forward;
     }
 }
