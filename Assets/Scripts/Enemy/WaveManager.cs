@@ -9,10 +9,31 @@ using Random = UnityEngine.Random;
 
 public class WaveManager : MonoBehaviour
 {
-    [Serializable]
-    private struct WaveData
+    private class Wave
     {
-        public float spawnCount;
+        private HashSet<Enemy> enemies = new();
+
+        public event Action Cleared;
+
+        public bool Active => enemies.Count > 0;
+
+        public bool Add(Enemy enemy) => enemies.Add(enemy);
+
+        public void Remove(Enemy enemy)
+        {
+            enemies.Remove(enemy);
+            
+            if (enemies.Count > 0)
+                return;
+            
+            Cleared?.Invoke();
+        }
+    }
+    
+    [Serializable]
+    private struct WaveInfo
+    {
+        public int spawnCount;
         public float spawnPeriodDuration;
     }
     
@@ -21,13 +42,14 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private LayerMask losRayMask;
 
-    [SerializeField] private List<WaveData> waves;
+    [SerializeField] private List<WaveInfo> waves;
 
-    private ObjectPool<Enemy> enemies;
+    private ObjectPool<Enemy> enemyPool;
+    private Wave currentWave = new();
 
     private void OnEnable()
     {
-        enemies = new ObjectPool<Enemy>(
+        enemyPool = new ObjectPool<Enemy>(
             () =>
             {
                 Enemy enemy = Instantiate(enemyPrefab);
@@ -36,9 +58,10 @@ public class WaveManager : MonoBehaviour
             },
             enemy =>
             {
-                Vector3 navMeshMin = navMesh.navMeshData.sourceBounds.min;
-                Vector3 navMeshMax = navMesh.navMeshData.sourceBounds.max;
-                float halfHeight = 0.5f * enemy.GetComponent<CapsuleCollider>().height;
+                Vector3 navMeshMin = navMesh.transform.position + navMesh.navMeshData.sourceBounds.min;
+                Vector3 navMeshMax = navMesh.transform.position + navMesh.navMeshData.sourceBounds.max;
+                Debug.DrawLine(navMeshMin, navMeshMax, Color.blue, 10f);
+                float halfHeight = 0.5f * enemy.GetComponent<NavMeshAgent>().height;
 
                 if (((1 << navMesh.gameObject.layer) & losRayMask) <= 0)
                     throw new Exception("NavMesh isn't on the right layer.");
@@ -51,6 +74,7 @@ public class WaveManager : MonoBehaviour
                         Random.Range(navMeshMin.z, navMeshMax.z)
                     );
 
+                    Debug.DrawLine(Vector3.zero, position, Color.magenta, 10f);
                     if (NavMesh.SamplePosition(position, out NavMeshHit hit, 4f * halfHeight, NavMesh.AllAreas))
                     {
                         if (!Physics.Linecast(player.position, hit.position + halfHeight * Vector3.up, losRayMask))
@@ -70,8 +94,41 @@ public class WaveManager : MonoBehaviour
             Destroy
         );
 
-        Enemy test = enemies.Get();
-        test = enemies.Get();
-        test = enemies.Get();
+        currentWave.Cleared += StartNextWave;
+        StartNextWave();
+    }
+
+    private void StartNextWave()
+    {
+        if (waves.Count <= 0)
+            return;
+
+        WaveInfo wave = waves[0];
+        waves.RemoveAt(0);
+
+        StartCoroutine(SpawningRoutine(wave));
+    }
+
+    private IEnumerator SpawningRoutine(WaveInfo wave)
+    {
+        YieldInstruction waitForNextSpawn = new WaitForSeconds(wave.spawnPeriodDuration / wave.spawnCount);
+        
+        int spawnCount = wave.spawnCount;
+        while (spawnCount-- > 0)
+        {
+            Enemy enemy = enemyPool.Get();
+            Damageable damageController = enemy.GetComponent<Damageable>();
+            damageController.Died += OnDeath;
+            currentWave.Add(enemy);
+
+            void OnDeath()
+            {
+                enemyPool.Release(enemy);
+                currentWave.Remove(enemy);
+                damageController.Died -= OnDeath;
+            }
+
+            yield return waitForNextSpawn;
+        }
     }
 }

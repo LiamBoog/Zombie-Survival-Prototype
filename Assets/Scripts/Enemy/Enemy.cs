@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent), typeof(CapsuleCollider))]
+[RequireComponent(typeof(NavMeshAgent), typeof(Damageable))]
 public class Enemy : MonoBehaviour
 {
     private NavMeshAgent agent;
