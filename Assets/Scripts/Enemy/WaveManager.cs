@@ -44,23 +44,25 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] private List<WaveInfo> waves;
 
+    private GameObject enemyParent;
     private ObjectPool<Enemy> enemyPool;
     private Wave currentWave = new();
 
     private void OnEnable()
     {
+        enemyParent = new GameObject("Enemies");
         enemyPool = new ObjectPool<Enemy>(
             () =>
             {
-                Enemy enemy = Instantiate(enemyPrefab);
+                Enemy enemy = Instantiate(enemyPrefab, enemyParent.transform);
                 enemy.gameObject.SetActive(false);
                 return enemy;
             },
             enemy =>
             {
-                Vector3 navMeshMin = navMesh.transform.position + navMesh.navMeshData.sourceBounds.min;
-                Vector3 navMeshMax = navMesh.transform.position + navMesh.navMeshData.sourceBounds.max;
-                Debug.DrawLine(navMeshMin, navMeshMax, Color.blue, 10f);
+                Vector3 offset = navMesh.transform.position;
+                Vector3 navMeshMin = offset + navMesh.navMeshData.sourceBounds.min;
+                Vector3 navMeshMax = offset + navMesh.navMeshData.sourceBounds.max;
                 float halfHeight = 0.5f * enemy.GetComponent<NavMeshAgent>().height;
 
                 if (((1 << navMesh.gameObject.layer) & losRayMask) <= 0)
@@ -74,7 +76,6 @@ public class WaveManager : MonoBehaviour
                         Random.Range(navMeshMin.z, navMeshMax.z)
                     );
 
-                    Debug.DrawLine(Vector3.zero, position, Color.magenta, 10f);
                     if (NavMesh.SamplePosition(position, out NavMeshHit hit, 4f * halfHeight, NavMesh.AllAreas))
                     {
                         if (!Physics.Linecast(player.position, hit.position + halfHeight * Vector3.up, losRayMask))
