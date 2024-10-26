@@ -8,6 +8,7 @@ public class Damageable : MonoBehaviour
 
     private float damage;
 
+    public event Action<float> Damaged; 
     public event Action Died;
 
     private void OnEnable()
@@ -18,6 +19,7 @@ public class Damageable : MonoBehaviour
     public void Damage(float damage)
     {
         this.damage += damage;
+        Damaged?.Invoke((health - this.damage) / health);
 
         if (this.damage < health)
             return;
