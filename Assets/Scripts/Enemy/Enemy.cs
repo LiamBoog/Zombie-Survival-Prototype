@@ -8,6 +8,7 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float meleeDamage = 20f;
+    [SerializeField] private float meleeKnockback = 10f;
     [SerializeField] private float meleeRange = 1.5f;
     [SerializeField] private float meleeCooldown = 2f;
     [SerializeField] private LayerMask meleeLayerMask;
@@ -60,13 +61,13 @@ public class Enemy : MonoBehaviour
 
             if (!Physics.CapsuleCast(transform.position - 0.4f * Vector3.up, transform.position + 0.4f * Vector3.up, 0.4f, (target.position - transform.position).normalized, out RaycastHit hit, meleeRange, meleeLayerMask))
             {
-                // try to suicide
                 yield return null;
                 continue;
             }
 
             if (hit.transform != target)
             {
+                // try to suicide
                 yield return null;
                 continue;
             }
@@ -77,8 +78,13 @@ public class Enemy : MonoBehaviour
                 continue;
             }
             
-            Debug.Log($"meleed {hit.transform.name}");
             damageable.Damage(meleeDamage);
+
+            if (hit.transform.TryGetComponent(out Knockable knockable))
+            {
+                knockable.ApplyKnockback(meleeKnockback * (hit.transform.position - transform.position).normalized);
+            }
+            
             yield return cooldown;
         }
     }

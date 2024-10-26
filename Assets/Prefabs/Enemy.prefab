@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeDamage: 50
+  meleeKnockback: 8
   meleeRange: 2
   meleeCooldown: 2
   meleeLayerMask:
