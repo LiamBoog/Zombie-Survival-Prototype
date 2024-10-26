@@ -6,13 +6,20 @@ public class Damageable : MonoBehaviour
 {
     [SerializeField] private float health = 100f;
 
+    private float damage;
+
     public event Action Died;
+
+    private void OnEnable()
+    {
+        damage = 0f;
+    }
 
     public void Damage(float damage)
     {
-        health -= damage;
+        this.damage += damage;
 
-        if (health > 0f)
+        if (this.damage < health)
             return;
         
         Died?.Invoke();
