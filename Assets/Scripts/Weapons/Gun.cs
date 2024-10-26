@@ -75,7 +75,7 @@ public abstract class Gun : MonoBehaviour
 
             IEnumerator DelayVisibility()
             {
-                yield return null;
+                yield return new WaitForFixedUpdate();
                 while (Vector3.Distance(projectileSource.position, projectile.transform.position) < minTravelDistance)
                 {
                     yield return null;

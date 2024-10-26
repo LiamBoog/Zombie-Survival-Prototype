@@ -21,7 +21,7 @@ public class StickyBomb : ExplosiveProjectile
     private void OnImpact(ImpactInfo impactInfo)
     {
         StickToSurface(impactInfo);
-        StartCoroutine(CountdownRoutine(impactInfo));
+        StartCoroutine(CountdownRoutine());
     }
 
     private void StickToSurface(ImpactInfo impactInfo)
@@ -35,12 +35,12 @@ public class StickyBomb : ExplosiveProjectile
         transform.parent = impactInfo.target;
     }
 
-    private IEnumerator CountdownRoutine(ImpactInfo impactInfo)
+    private IEnumerator CountdownRoutine()
     {
         yield return new WaitForSeconds(countDownDuration);
         
-        SplashDamage(impactInfo.point);
-        KnockBack(impactInfo.point);
+        SplashDamage(transform.position);
+        KnockBack(transform.position);
         Expire();
     }
 

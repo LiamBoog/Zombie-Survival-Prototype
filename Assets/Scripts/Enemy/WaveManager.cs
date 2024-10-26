@@ -15,8 +15,6 @@ public class WaveManager : MonoBehaviour
 
         public event Action Cleared;
 
-        public bool Active => enemies.Count > 0;
-
         public bool Add(Enemy enemy) => enemies.Add(enemy);
 
         public void Remove(Enemy enemy)
@@ -95,8 +93,13 @@ public class WaveManager : MonoBehaviour
             Destroy
         );
 
-        currentWave.Cleared += StartNextWave;
         StartNextWave();
+        currentWave.Cleared += StartNextWave;
+    }
+
+    private void OnDisable()
+    {
+        currentWave.Cleared -= StartNextWave;
     }
 
     private void StartNextWave()

@@ -29,10 +29,7 @@ public abstract class ExplosiveProjectile : Projectile
     {
         foreach (Knockable target in GetTargets<Knockable>(source))
         {
-            target.GetComponent<Rigidbody>().AddForce(
-                    ComputeKnockback(source, target.transform.position),
-                    ForceMode.Impulse
-                );
+            target.ApplyKnockback(ComputeKnockback(source, target.transform.position));
         }
     }
 
