@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Rocket : ExplosiveProjectile
 {
     public override void Initialize()

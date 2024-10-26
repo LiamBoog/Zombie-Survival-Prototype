@@ -241,7 +241,7 @@ MonoBehaviour:
   meleeLayerMask:
     serializedVersion: 2
     m_Bits: 704
-  selfDestructRadius: 8
+  selfDestructRadius: 10
   selfDestructProximityTime: 4
   selfDestructProbability: 0.3
   selfDestructCooldown: 1
@@ -261,7 +261,7 @@ MonoBehaviour:
   damage: 150
   damageMask:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 64
   damageFalloff:
     serializedVersion: 2
     m_Curve:

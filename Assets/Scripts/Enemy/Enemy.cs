@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -120,6 +119,7 @@ public class Enemy : MonoBehaviour
                 }
                 
                 StopAllCoroutines();
+                agent.enabled = false;
                 StartCoroutine(CountdownRoutine());
                 break;
             }
@@ -139,6 +139,7 @@ public class Enemy : MonoBehaviour
             Explosive explosive = GetComponent<Explosive>();
             explosive.SplashDamage(transform.position);
             explosive.KnockBack(transform.position);
+            GetComponent<Damageable>().Damage(float.MaxValue);
         }
     }
     
