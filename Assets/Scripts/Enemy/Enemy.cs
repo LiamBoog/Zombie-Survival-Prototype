@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent), typeof(Damageable), typeof(Knockable))]
+[RequireComponent(typeof(Explosive))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float meleeDamage = 20f;
@@ -12,6 +14,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float meleeRange = 1.5f;
     [SerializeField] private float meleeCooldown = 2f;
     [SerializeField] private LayerMask meleeLayerMask;
+
+    [SerializeField] private float selfDestructRadius = 5f;
+    [SerializeField] private float selfDestructProximityTime = 4f;
+    [SerializeField, Range(0f, 1f)] private float selfDestructProbability = 0.3f;
+    [SerializeField] private float selfDestructCooldown = 1f;
+    [SerializeField] private float selfDestructCountdown = 2f;
 
     private NavMeshAgent agent;
     private Transform target;
@@ -23,7 +31,8 @@ public class Enemy : MonoBehaviour
             target = value;
             StopAllCoroutines();
             StartCoroutine(PathUpdateRoutine());
-            StartCoroutine(AttackRoutine());
+            StartCoroutine(MeleeRoutine());
+            StartCoroutine(SelfDestructRoutine());
         }
     }
     
@@ -46,10 +55,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private IEnumerator AttackRoutine()
+    private IEnumerator MeleeRoutine()
     {
         YieldInstruction cooldown = new WaitForSeconds(meleeCooldown);
-        
+
         while (true)
         {
             float distance = Vector3.Distance(transform.position, target.position);
@@ -67,7 +76,6 @@ public class Enemy : MonoBehaviour
 
             if (hit.transform != target)
             {
-                // try to suicide
                 yield return null;
                 continue;
             }
@@ -89,6 +97,51 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private IEnumerator SelfDestructRoutine()
+    {
+        YieldInstruction cooldown = new WaitForSeconds(selfDestructCooldown);
+        
+        while (true)
+        {
+            float timer = selfDestructProximityTime;
+            while (Vector3.Distance(transform.position, target.position) <= selfDestructRadius)
+            {
+                timer -= Time.deltaTime;
+                if (timer > 0f)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                if (Random.Range(0f, 1f) < selfDestructProbability)
+                {
+                    yield return cooldown;
+                    continue;
+                }
+                
+                StopAllCoroutines();
+                StartCoroutine(CountdownRoutine());
+                break;
+            }
+
+            yield return null;
+        }
+
+        IEnumerator CountdownRoutine()
+        {
+            float timer = selfDestructCountdown;
+            while (timer > 0f)
+            {
+                timer -= Time.deltaTime;
+                yield return null;
+            }
+
+            Explosive explosive = GetComponent<Explosive>();
+            explosive.SplashDamage(transform.position);
+            explosive.KnockBack(transform.position);
+        }
+    }
+    
     public void KnockbackHandler(Vector3 impulse)
     {
         LayerMask enemyMask = LayerMask.GetMask(LayerMask.LayerToName(gameObject.layer));

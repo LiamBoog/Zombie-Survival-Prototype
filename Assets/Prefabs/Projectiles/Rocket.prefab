@@ -121,6 +121,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6705182376876522230}
+    - targetCorrespondingSourceObject: {fileID: 787788449715176396, guid: 38b5da2b98a284f4280da5083b676d00,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1767893692843903190}
   m_SourcePrefab: {fileID: 100100000, guid: 38b5da2b98a284f4280da5083b676d00, type: 3}
 --- !u!1 &2158252788115044899 stripped
 GameObject:
@@ -167,10 +171,69 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 640
+--- !u!114 &1767893692843903190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2158252788115044899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f4a8b65aa5c7d4a9c6ee2ef3ba1fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   damage: 60
   damageMask:
     serializedVersion: 2
     m_Bits: 512
-  minDamageFallOff: 0.5
+  damageFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.7976187
+      outSlope: -0.7976187
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.04477612
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: -0.23992512
+      outSlope: -0.23992512
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0676617
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  knockbackFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.25
+      outSlope: -0.25
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.75
+      inSlope: -0.25
+      outSlope: -0.25
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   splashRadius: 5
   knockback: 10

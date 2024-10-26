@@ -116,6 +116,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8277429573274204909}
+    - targetCorrespondingSourceObject: {fileID: 787788449715176396, guid: 38b5da2b98a284f4280da5083b676d00,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8942747814362948489}
   m_SourcePrefab: {fileID: 100100000, guid: 38b5da2b98a284f4280da5083b676d00, type: 3}
 --- !u!1 &1726461701182313619 stripped
 GameObject:
@@ -139,13 +143,6 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 640
-  damage: 110
-  damageMask:
-    serializedVersion: 2
-    m_Bits: 576
-  minDamageFallOff: 0
-  splashRadius: 10
-  knockback: 7
   countDownDuration: 1
 --- !u!135 &8277429573274204909
 SphereCollider:
@@ -168,3 +165,69 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8942747814362948489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726461701182313619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5f4a8b65aa5c7d4a9c6ee2ef3ba1fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 110
+  damageMask:
+    serializedVersion: 2
+    m_Bits: 576
+  damageFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  knockbackFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  splashRadius: 10
+  knockback: 7
