@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 public class WaveManager : MonoBehaviour
@@ -49,52 +51,7 @@ public class WaveManager : MonoBehaviour
     private void OnEnable()
     {
         enemyParent = new GameObject("Enemies");
-        enemyPool = new ObjectPool<Enemy>(
-            () =>
-            {
-                Enemy enemy = Instantiate(enemyPrefab, enemyParent.transform);
-                enemy.gameObject.SetActive(false);
-                return enemy;
-            },
-            enemy =>
-            {
-                Vector3 offset = navMesh.transform.position;
-                Vector3 navMeshMin = offset + navMesh.navMeshData.sourceBounds.min;
-                Vector3 navMeshMax = offset + navMesh.navMeshData.sourceBounds.max;
-                float halfHeight = 0.5f * enemy.GetComponent<NavMeshAgent>().height;
-
-                if (((1 << navMesh.gameObject.layer) & losRayMask) <= 0)
-                    throw new Exception("NavMesh isn't on the right layer.");
-                
-                while (true)
-                {
-                    Vector3 position = new Vector3(
-                        Random.Range(navMeshMin.x, navMeshMax.x),
-                        Random.Range(navMeshMin.y, navMeshMax.y),
-                        Random.Range(navMeshMin.z, navMeshMax.z)
-                    );
-
-                    if (NavMesh.SamplePosition(position, out NavMeshHit hit, 4f * halfHeight, NavMesh.AllAreas))
-                    {
-                        if (!Physics.Linecast(player.position, hit.position + halfHeight * Vector3.up, losRayMask))
-                            continue;
-
-                        enemy.transform.position = hit.position;
-                        enemy.gameObject.SetActive(true);
-                        enemy.Target = player;
-                        return;
-                    }
-                }
-            },
-            enemy =>
-            {
-                enemy.GetComponent<NavMeshAgent>().enabled = true;
-                enemy.GetComponent<Rigidbody>().isKinematic = true;
-                enemy.StopAllCoroutines();
-                enemy.gameObject.SetActive(false);
-            },
-            Destroy
-        );
+        enemyPool = new ObjectPool<Enemy>(CreateEnemy, OnGetEnemy, OnReleaseEnemy, Destroy);
 
         StartNextWave();
         currentWave.Cleared += StartNextWave;
@@ -103,6 +60,59 @@ public class WaveManager : MonoBehaviour
     private void OnDisable()
     {
         currentWave.Cleared -= StartNextWave;
+    }
+
+    private Enemy CreateEnemy()
+    {
+        Enemy output = Instantiate(enemyPrefab, enemyParent.transform);
+        output.gameObject.SetActive(false);
+        return output;
+    }
+
+    private void OnGetEnemy(Enemy enemy)
+    {
+        Vector3 offset = navMesh.transform.position;
+        Vector3 navMeshMin = offset + navMesh.navMeshData.sourceBounds.min;
+        Vector3 navMeshMax = offset + navMesh.navMeshData.sourceBounds.max;
+        float halfHeight = 0.5f * enemy.GetComponent<NavMeshAgent>().height;
+
+        if (((1 << navMesh.gameObject.layer) & losRayMask) <= 0)
+            throw new Exception("NavMesh isn't on the right layer.");
+
+        StartCoroutine(SpawnInRandomLocation());
+
+        IEnumerator SpawnInRandomLocation()
+        {
+            while (true)
+            {
+                yield return null;
+                
+                Vector3 position = new Vector3(
+                    Random.Range(navMeshMin.x, navMeshMax.x),
+                    Random.Range(navMeshMin.y, navMeshMax.y),
+                    Random.Range(navMeshMin.z, navMeshMax.z)
+                );
+
+                if (!NavMesh.SamplePosition(position, out NavMeshHit hit, 4f * halfHeight, NavMesh.AllAreas))
+                    continue;
+                
+                if (!Physics.Linecast(player.position, hit.position + halfHeight * Vector3.up, losRayMask))
+                    continue;
+
+                enemy.transform.position = hit.position;
+                enemy.gameObject.SetActive(true);
+                enemy.Target = player;
+                break;
+            }
+        }
+    }
+
+    private void OnReleaseEnemy(Enemy enemy)
+    {
+        enemy.GetComponent<NavMeshAgent>().enabled = true;
+        enemy.GetComponent<Rigidbody>().isKinematic = true;
+        enemy.StopAllCoroutines();
+        enemy.gameObject.SetActive(false);
     }
 
     private void StartNextWave()

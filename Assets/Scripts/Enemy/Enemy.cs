@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             agent.destination = target.position;
-            yield return new WaitForSeconds(0.001f * Vector3.Distance(transform.position, target.position));
+            yield return new WaitForSeconds(0.005f * Vector3.Distance(transform.position, target.position));
         }
     }
 
