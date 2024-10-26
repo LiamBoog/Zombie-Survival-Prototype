@@ -45,7 +45,6 @@ public abstract class Gun : MonoBehaviour
         projectile.gameObject.SetActive(true);
         projectile.GetComponent<MeshRenderer>().enabled = false;
         projectile.transform.parent = projectileParent.transform;
-        projectile.CollisionMask = projectileCollisionMask;
         projectile.Initialize();
     }
 

@@ -11,28 +11,20 @@ public abstract class Projectile : MonoBehaviour
     }
     
     [SerializeField] private float lifetime = 5f;
+    [SerializeField] protected LayerMask collisionMask;
     
     public event Action<ImpactInfo> Impact;
     public event Action Expired;
 
     private float remainingLife;
-    private LayerMask targetMask;
     
     public Rigidbody Rigidbody => GetComponent<Rigidbody>();
-
-    public LayerMask CollisionMask
-    {
-        set
-        {
-            Rigidbody rigidbody = GetComponent<Rigidbody>();
-            rigidbody.includeLayers = value;
-            rigidbody.excludeLayers = ~value;
-        }
-    }
 
     public virtual void Initialize()
     {
         remainingLife = lifetime;
+        Rigidbody.includeLayers = collisionMask;
+        Rigidbody.excludeLayers = ~collisionMask;
         Impact += OnImpact;
     }
 

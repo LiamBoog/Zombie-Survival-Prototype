@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class ExplosiveProjectile : Projectile
 {
     [SerializeField] protected float damage;
+    [SerializeField] private LayerMask damageMask;
     [SerializeField, Range(0f, 1f)] protected float minDamageFallOff;
     [SerializeField] protected float splashRadius;
     [SerializeField] protected float knockback;
@@ -19,7 +20,7 @@ public abstract class ExplosiveProjectile : Projectile
     
     protected void SplashDamage(Vector3 center)
     {
-        foreach (Damageable target in GetTargets<Damageable>(center))
+        foreach (Damageable target in GetTargets<Damageable>(center, damageMask))
         {
             target.Damage(ComputeSplashDamage(center, target.transform.position));
         }
@@ -33,9 +34,9 @@ public abstract class ExplosiveProjectile : Projectile
         }
     }
 
-    private IEnumerable<T> GetTargets<T>(Vector3 center) where T : Component
+    private IEnumerable<T> GetTargets<T>(Vector3 center, int layerMask = ~0) where T : Component
     {
-        return Physics.OverlapSphere(center, splashRadius)
+        return Physics.OverlapSphere(center, splashRadius, layerMask)
             .Select(c => c.GetComponent<T>())
             .Where(o => o != null);
     }

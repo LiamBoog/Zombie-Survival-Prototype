@@ -103,6 +103,7 @@ MonoBehaviour:
   projectileCollisionMask:
     serializedVersion: 2
     m_Bits: 640
+  minTravelDistance: 0
   camera: {fileID: 0}
   rocketVelocity: 25
   rayCastDistance: 100

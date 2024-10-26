@@ -3959,18 +3959,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1997705416088596665}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2111518284 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6007739731361686255, guid: 30f1fdd3c0e148d4988020312c39a605,
-    type: 3}
-  m_PrefabInstance: {fileID: 1997705416088596665}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58769fa3d6369f64ead498a4b2dec10b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1997705416088596665
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3984,36 +3972,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6007739731361686255, guid: 30f1fdd3c0e148d4988020312c39a605,
+    - target: {fileID: 8159600816339376491, guid: 30f1fdd3c0e148d4988020312c39a605,
         type: 3}
-      propertyPath: knockbackHandler.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6007739731361686255, guid: 30f1fdd3c0e148d4988020312c39a605,
-        type: 3}
-      propertyPath: knockbackHandler.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: postProcessing
       value: 
-      objectReference: {fileID: 2111518284}
-    - target: {fileID: 6007739731361686255, guid: 30f1fdd3c0e148d4988020312c39a605,
-        type: 3}
-      propertyPath: knockbackHandler.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6007739731361686255, guid: 30f1fdd3c0e148d4988020312c39a605,
-        type: 3}
-      propertyPath: knockbackHandler.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: DefaultKnockbackHandler
-      objectReference: {fileID: 0}
-    - target: {fileID: 6007739731361686255, guid: 30f1fdd3c0e148d4988020312c39a605,
-        type: 3}
-      propertyPath: knockbackHandler.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Knockable, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6007739731361686255, guid: 30f1fdd3c0e148d4988020312c39a605,
-        type: 3}
-      propertyPath: knockbackHandler.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 832575518}
     - target: {fileID: 8966000182706280165, guid: 30f1fdd3c0e148d4988020312c39a605,
         type: 3}
       propertyPath: m_LocalPosition.x

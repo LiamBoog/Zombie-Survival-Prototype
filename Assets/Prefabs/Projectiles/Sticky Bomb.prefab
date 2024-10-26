@@ -136,7 +136,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 5
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 640
   damage: 110
+  damageMask:
+    serializedVersion: 2
+    m_Bits: 576
   minDamageFallOff: 0
   splashRadius: 10
   knockback: 7
