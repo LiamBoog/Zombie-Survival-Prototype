@@ -7,6 +7,11 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent), typeof(Damageable), typeof(Knockable))]
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private float meleeDamage = 20f;
+    [SerializeField] private float meleeRange = 1.5f;
+    [SerializeField] private float meleeCooldown = 2f;
+    [SerializeField] private LayerMask meleeLayerMask;
+
     private NavMeshAgent agent;
     private Transform target;
 
@@ -17,6 +22,7 @@ public class Enemy : MonoBehaviour
             target = value;
             StopAllCoroutines();
             StartCoroutine(PathUpdateRoutine());
+            StartCoroutine(AttackRoutine());
         }
     }
     
@@ -36,6 +42,44 @@ public class Enemy : MonoBehaviour
         {
             agent.destination = target.position;
             yield return new WaitForSeconds(0.005f * Vector3.Distance(transform.position, target.position));
+        }
+    }
+
+    private IEnumerator AttackRoutine()
+    {
+        YieldInstruction cooldown = new WaitForSeconds(meleeCooldown);
+        
+        while (true)
+        {
+            float distance = Vector3.Distance(transform.position, target.position);
+            if (distance > meleeRange)
+            {
+                yield return null;
+                continue;
+            }
+
+            if (!Physics.CapsuleCast(transform.position - 0.4f * Vector3.up, transform.position + 0.4f * Vector3.up, 0.4f, (target.position - transform.position).normalized, out RaycastHit hit, meleeRange, meleeLayerMask))
+            {
+                // try to suicide
+                yield return null;
+                continue;
+            }
+
+            if (hit.transform != target)
+            {
+                yield return null;
+                continue;
+            }
+
+            if (!hit.transform.TryGetComponent(out Damageable damageable))
+            {
+                yield return null;
+                continue;
+            }
+            
+            Debug.Log($"meleed {hit.transform.name}");
+            damageable.Damage(meleeDamage);
+            yield return cooldown;
         }
     }
 

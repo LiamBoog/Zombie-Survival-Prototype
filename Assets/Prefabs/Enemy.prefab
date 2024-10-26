@@ -233,3 +233,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ac9e962d06969a44ba0b99c95efe5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meleeDamage: 20
+  meleeRange: 2
+  meleeCooldown: 2
+  meleeLayerMask:
+    serializedVersion: 2
+    m_Bits: 704
