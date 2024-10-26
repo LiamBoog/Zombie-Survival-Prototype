@@ -27,7 +27,6 @@ public class StickyBomb : ExplosiveProjectile
     private void StickToSurface(ImpactInfo impactInfo)
     {
         Rigidbody rigidbody = GetComponent<Rigidbody>();
-        rigidbody.velocity = Vector3.zero;
         rigidbody.isKinematic = true;
         rigidbody.interpolation = RigidbodyInterpolation.None;
 
@@ -39,8 +38,8 @@ public class StickyBomb : ExplosiveProjectile
     {
         yield return new WaitForSeconds(countDownDuration);
         
-        SplashDamage(transform.position);
         KnockBack(transform.position);
+        SplashDamage(transform.position);
         Expire();
     }
 

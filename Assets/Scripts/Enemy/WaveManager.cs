@@ -88,6 +88,9 @@ public class WaveManager : MonoBehaviour
             },
             enemy =>
             {
+                enemy.GetComponent<NavMeshAgent>().enabled = true;
+                enemy.GetComponent<Rigidbody>().isKinematic = true;
+                enemy.StopAllCoroutines();
                 enemy.gameObject.SetActive(false);
             },
             Destroy

@@ -16,8 +16,8 @@ public class Rocket : ExplosiveProjectile
 
     private void OnImpact(ImpactInfo impactInfo)
     {
-        SplashDamage(impactInfo.point);
         KnockBack(impactInfo.point);
+        SplashDamage(impactInfo.point);
 
         Expire();
     }
