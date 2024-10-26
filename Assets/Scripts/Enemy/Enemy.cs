@@ -64,7 +64,8 @@ public class Enemy : MonoBehaviour
 
             agent.enabled = false;
             rigidbody.isKinematic = false;
-            
+            rigidbody.velocity = Vector3.zero;
+
             if (impulse.HasValue)
                 rigidbody.AddForce(impulse.Value, ForceMode.Impulse);
 

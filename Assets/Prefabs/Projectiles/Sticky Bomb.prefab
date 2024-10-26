@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 5
-  damage: 50
+  damage: 110
   minDamageFallOff: 0
   splashRadius: 10
   knockback: 7
