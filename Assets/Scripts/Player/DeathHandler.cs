@@ -5,9 +5,7 @@ using UnityEngine.InputSystem;
 public class DeathHandler : MonoBehaviour
 {
     [SerializeField] private GameObject deathUI;
-    [SerializeField] private InputActionReference aim;
-    [SerializeField] private InputActionReference primaryFire;
-    [SerializeField] private InputActionReference secondaryFire;
+    [SerializeField] private InputActionAsset inputs;
 
     private void OnEnable()
     {
@@ -21,9 +19,7 @@ public class DeathHandler : MonoBehaviour
 
     private void OnDeath()
     {
-        aim.action.Disable();
-        primaryFire.action.Disable();
-        secondaryFire.action.Disable();
+        inputs.Disable();
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         deathUI.SetActive(true);

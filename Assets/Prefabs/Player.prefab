@@ -1845,11 +1845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathUI: {fileID: 5477617210006207781}
-  aim: {fileID: 2597124539783054109, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
-  primaryFire: {fileID: -3047908182259645644, guid: 7a019ad006cb50a4fa0350cf7af918b6,
-    type: 3}
-  secondaryFire: {fileID: -1374206435882733207, guid: 7a019ad006cb50a4fa0350cf7af918b6,
-    type: 3}
+  inputs: {fileID: -944628639613478452, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
 --- !u!1001 &1532465778364612281
 PrefabInstance:
   m_ObjectHideFlags: 0
