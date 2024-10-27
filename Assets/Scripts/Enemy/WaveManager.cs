@@ -1,12 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
-using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 public class WaveManager : MonoBehaviour

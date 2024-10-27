@@ -3,8 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(Explosive))]
 public abstract class ExplosiveProjectile : Projectile
 {
-    [SerializeField] private AudioSource explosionSound;
-    
     private Explosive explosive;
 
     private void OnEnable()

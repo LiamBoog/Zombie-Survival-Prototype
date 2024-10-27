@@ -248,6 +248,8 @@ MonoBehaviour:
   selfDestructProbability: 0.3
   selfDestructCooldown: 1
   selfDestructCountdown: 2
+  pathfindingUpdateRate: 0.005
+  knockbackPropagationRadius: 2
   fuseSound: {fileID: 7007295649721236638}
 --- !u!114 &768971052236411727
 MonoBehaviour:

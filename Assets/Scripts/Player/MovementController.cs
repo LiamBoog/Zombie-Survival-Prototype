@@ -31,6 +31,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private InputBuffer jumpBuffer;
+    [SerializeField] private float groundCheckOffset = -0.1f;
 
     [SerializeField] private InputActionReference move;
     [SerializeField] private InputActionReference jump;
@@ -61,7 +62,7 @@ public class MovementController : MonoBehaviour
     private bool GroundCheck()
     {
         return Physics.OverlapSphere(
-                transform.position + 0.25f * collider.height * Vector3.down,  
+                transform.position - (0.5f * collider.height - collider.radius + groundCheckOffset) * Vector3.up,  
                 collider.radius, 
                 groundCheckMask)
             .Any();
