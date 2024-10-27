@@ -233,7 +233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 6456957830706533305}
   offset: {x: 0, y: 0.55, z: 0}
-  aimSensitivity: 75
+  aimSensitivity: 60
   position:
     timeConstant: 0.01
   aim: {fileID: 2597124539783054109, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
@@ -294,13 +294,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2800103343505138191}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.21065967, y: -0, z: -0.00000002235174, w: 0.97755945}
+  m_LocalRotation: {x: -0.14523432, y: -0, z: -0.00000002235174, w: 0.9893973}
   m_LocalPosition: {x: 0.083, y: -0.415, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2202497578224490089}
-  m_LocalEulerAnglesHint: {x: -24.322, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -16.702, y: 0, z: 0}
 --- !u!1 &6837554088624872611
 GameObject:
   m_ObjectHideFlags: 0
