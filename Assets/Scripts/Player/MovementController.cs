@@ -61,9 +61,9 @@ public class MovementController : MonoBehaviour
     private bool GroundCheck()
     {
         return Physics.OverlapSphere(
-            transform.position + 0.5f * collider.height * Vector3.down,  
-            2f * Physics.defaultContactOffset, 
-            groundCheckMask)
+                transform.position + 0.25f * collider.height * Vector3.down,  
+                collider.radius, 
+                groundCheckMask)
             .Any();
     }
 

@@ -315,7 +315,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   splashRadius: 8
-  knockback: 20
+  knockback: 30
 --- !u!82 &7007295649721236638
 AudioSource:
   m_ObjectHideFlags: 0
