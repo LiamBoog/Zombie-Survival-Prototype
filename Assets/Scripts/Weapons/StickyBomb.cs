@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class StickyBomb : ExplosiveProjectile
 {
+    [SerializeField] private AudioSource timerSound;
+    
     [SerializeField] private float countDownDuration = 2f;
 
     public override void Initialize()
@@ -36,6 +38,7 @@ public class StickyBomb : ExplosiveProjectile
 
     private IEnumerator CountdownRoutine()
     {
+        timerSound.Play();
         yield return new WaitForSeconds(countDownDuration);
         
         Explode(transform.position);

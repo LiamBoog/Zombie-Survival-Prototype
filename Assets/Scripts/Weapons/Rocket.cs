@@ -1,8 +1,14 @@
+
+using UnityEngine;
+
 public class Rocket : ExplosiveProjectile
 {
+    [SerializeField] private AudioSource thrusterSound;
+    
     public override void Initialize()
     {
         base.Initialize();
+        thrusterSound.Play();
         Impact += OnImpact;
     }
 

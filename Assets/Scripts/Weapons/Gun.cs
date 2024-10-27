@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -9,11 +8,12 @@ public abstract class Gun : MonoBehaviour
 {
     [SerializeField] private Projectile projectilePrefab;
     [SerializeField] private InputActionReference fire;
+    [SerializeField] private AudioSource fireAudio;
 
     [SerializeField] protected Transform projectileSource;
     [SerializeField] protected LayerMask projectileCollisionMask;
     [SerializeField] private float minTravelDistance = 1f;
-
+    
     private GameObject projectileParent;
     private ObjectPool<Projectile> projectilePool;
     private Action onFixedUpdate;
@@ -25,12 +25,14 @@ public abstract class Gun : MonoBehaviour
         
         fire.action.Enable();
         fire.action.performed += SpawnProjectile;
+        fire.action.performed += PlayFireSound;
     }
 
     private void OnDisable()
     {
         fire.action.Disable();
         fire.action.performed -= SpawnProjectile;
+        fire.action.performed -= PlayFireSound;
     }
 
     private Projectile CreateProjectile()
@@ -91,5 +93,10 @@ public abstract class Gun : MonoBehaviour
     {
         onFixedUpdate?.Invoke();
         onFixedUpdate = null;
+    }
+
+    private void PlayFireSound(InputAction.CallbackContext _)
+    {
+        fireAudio.Play();
     }
 }

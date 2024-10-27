@@ -7,6 +7,8 @@ using UnityEngine.Serialization;
 
 public class Explosive : MonoBehaviour
 {
+    [SerializeField] private AudioSource explosionSound;
+    
     [SerializeField] private float damage;
     [SerializeField] private LayerMask damageMask;
     [SerializeField] private AnimationCurve damageFalloff;
@@ -14,7 +16,14 @@ public class Explosive : MonoBehaviour
     [SerializeField] private float splashRadius;
     [SerializeField] private float knockback;
 
-    public void SplashDamage(Vector3 center)
+    public void Explode(Vector3 center)
+    {
+        AudioSource.PlayClipAtPoint(explosionSound.clip, center, explosionSound.volume);
+        SplashDamage(center);
+        KnockBack(center);
+    }   
+    
+    private void SplashDamage(Vector3 center)
     {
         foreach (Damageable target in ComponentUtility.GetComponentsInRadius<Damageable>(center, splashRadius, damageMask))
         {
@@ -23,7 +32,7 @@ public class Explosive : MonoBehaviour
         }
     }
 
-    public void KnockBack(Vector3 source)
+    private void KnockBack(Vector3 source)
     {
         foreach (Knockable target in ComponentUtility.GetComponentsInRadius<Knockable>(source, splashRadius))
         {

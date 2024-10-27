@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float selfDestructCooldown = 1f;
     [SerializeField] private float selfDestructCountdown = 2f;
 
+    [SerializeField] private AudioSource fuseSound;
+
     private NavMeshAgent agent;
     private Transform target;
 
@@ -129,6 +131,8 @@ public class Enemy : MonoBehaviour
 
         IEnumerator CountdownRoutine()
         {
+            fuseSound.Play();
+            
             float timer = selfDestructCountdown;
             while (timer > 0f)
             {
@@ -136,9 +140,7 @@ public class Enemy : MonoBehaviour
                 yield return null;
             }
 
-            Explosive explosive = GetComponent<Explosive>();
-            explosive.SplashDamage(transform.position);
-            explosive.KnockBack(transform.position);
+            GetComponent<Explosive>().Explode(transform.position);
             GetComponent<Damageable>().Damage(float.MaxValue);
         }
     }
