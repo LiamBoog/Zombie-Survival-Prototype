@@ -18,21 +18,30 @@ public abstract class Gun : MonoBehaviour
     private ObjectPool<Projectile> projectilePool;
     private Action onFixedUpdate;
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         projectileParent = new GameObject($"{name} Projectiles");
         projectilePool = new ObjectPool<Projectile>(CreateProjectile, OnGetProjectile, OnReleaseProjectile, Destroy);
         
         fire.action.Enable();
-        fire.action.performed += SpawnProjectile;
-        fire.action.performed += PlayFireSound;
+        fire.action.performed += OnFire;
     }
 
     private void OnDisable()
     {
         fire.action.Disable();
-        fire.action.performed -= SpawnProjectile;
-        fire.action.performed -= PlayFireSound;
+        fire.action.performed -= OnFire;
+    }
+
+    protected abstract bool Cooldown();
+
+    private void OnFire(InputAction.CallbackContext _)
+    {
+        if (!Cooldown())
+            return;
+        
+        SpawnProjectile();
+        PlayFireSound();
     }
 
     private Projectile CreateProjectile()
@@ -59,7 +68,7 @@ public abstract class Gun : MonoBehaviour
         projectile.Deinitialize();
     }
     
-    private void SpawnProjectile(InputAction.CallbackContext _)
+    private void SpawnProjectile()
     {
         onFixedUpdate += () =>
         {
@@ -95,7 +104,7 @@ public abstract class Gun : MonoBehaviour
         onFixedUpdate = null;
     }
 
-    private void PlayFireSound(InputAction.CallbackContext _)
+    private void PlayFireSound()
     {
         fireAudio.Play();
     }

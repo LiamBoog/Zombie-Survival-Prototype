@@ -189,10 +189,13 @@ MonoBehaviour:
   projectileCollisionMask:
     serializedVersion: 2
     m_Bits: 640
-  minTravelDistance: 1
+  minTravelDistance: 2
   user: {fileID: 0}
   userTransform: {fileID: 0}
-  stickyBombVelocity: 20
+  chargeIndicator: {fileID: 0}
+  stickyBombVelocity: 25
+  cooldown: 4
+  maxCharges: 3
 --- !u!82 &1770969614048279418
 AudioSource:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ public class FirstPersonCamera : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private Vector3 offset;
-    [SerializeField] private float aimSensitivity = 75f;
+    [SerializeField, Range(0f, 0.5f)] private float aimSensitivity = 0.05f;
     [SerializeField] private ExpMovingAverageVector3 position = new(0.01f);
 
     [SerializeField] private InputActionReference aim;
@@ -43,7 +43,7 @@ public class FirstPersonCamera : MonoBehaviour
         float verticalAngle = Vector3.Angle(Vector3.up, lookVector);
         
         Vector2 aimDelta = aim.action.ReadValue<Vector2>();
-        Vector3 eulerAngles = aimSensitivity * Time.deltaTime * new Vector3(
+        Vector3 eulerAngles = aimSensitivity * new Vector3(
             Mathf.Clamp(-aimDelta.y, 0f - verticalAngle, 180f - verticalAngle), // clamp vertical angle to the forward direction
             aimDelta.x
         );

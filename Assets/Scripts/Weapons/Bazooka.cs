@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Bazooka : Gun
@@ -6,6 +7,31 @@ public class Bazooka : Gun
 
     [SerializeField] private float rocketVelocity = 25f;
     [SerializeField] private float rayCastDistance = 100f;
+    [SerializeField] private float cooldown = 0.75f;
+
+    private bool canShoot;
+
+    private void OnEnable()
+    {
+        base.OnEnable();
+        canShoot = true;
+    }
+
+    protected override bool Cooldown()
+    {
+        if (!canShoot)
+            return false;
+
+        canShoot = false;
+        StartCoroutine(WaitForCooldown());
+        return true;
+
+        IEnumerator WaitForCooldown()
+        {
+            yield return new WaitForSeconds(cooldown);
+            canShoot = true;
+        }
+    }
 
     protected override void InitializeProjectile(Projectile rocket)
     {
