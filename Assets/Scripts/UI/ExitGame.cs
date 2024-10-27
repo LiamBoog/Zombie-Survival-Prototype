@@ -8,6 +8,8 @@ public class ExitGame : MonoBehaviour
         if (!Application.isEditor)
             Application.Quit();
 
+#if UNITY_EDITOR
         EditorApplication.isPlaying = false;
+#endif
     }
 }

@@ -664,6 +664,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fc88a5a8abf19b4a98c2b9d520b5462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneName: GameplayScene
   scene: {fileID: 102900000, guid: 99c9720ab356a0642a771bea13969a05, type: 3}
 --- !u!1 &2321470368737820892
 GameObject:
@@ -1022,6 +1023,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fc88a5a8abf19b4a98c2b9d520b5462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneName: MainMenu
   scene: {fileID: 102900000, guid: 9bf9b33a71ce6ea45b28a3a1aadb4400, type: 3}
 --- !u!1 &5477617210006207781
 GameObject:
@@ -1720,6 +1722,7 @@ MonoBehaviour:
   jumpHeight: 4
   jumpBuffer:
     duration: 0.1
+  groundCheckOffset: 0.1
   move: {fileID: 6269550399385339001, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
   jump: {fileID: -6137543584031828948, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
 --- !u!114 &2939795917523817088

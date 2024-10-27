@@ -833,9 +833,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   waves:
-  - spawnCount: 10
+  - prelude: 0
+    spawnCount: 10
     spawnPeriodDuration: 10
-  - spawnCount: 30
+  - prelude: 5
+    spawnCount: 30
     spawnPeriodDuration: 10
 --- !u!4 &1370257580
 Transform:

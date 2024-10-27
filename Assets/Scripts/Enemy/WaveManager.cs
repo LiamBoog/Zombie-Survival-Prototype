@@ -31,6 +31,7 @@ public class WaveManager : MonoBehaviour
     [Serializable]
     private struct WaveInfo
     {
+        public float prelude;
         public int spawnCount;
         public float spawnPeriodDuration;
     }
@@ -127,6 +128,8 @@ public class WaveManager : MonoBehaviour
     private IEnumerator SpawningRoutine(WaveInfo wave)
     {
         YieldInstruction waitForNextSpawn = new WaitForSeconds(wave.spawnPeriodDuration / wave.spawnCount);
+
+        yield return new WaitForSeconds(wave.prelude);
         
         int spawnCount = wave.spawnCount;
         while (spawnCount-- > 0)

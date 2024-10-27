@@ -31,7 +31,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private InputBuffer jumpBuffer;
-    [SerializeField] private float groundCheckOffset = -0.1f;
+    [SerializeField] private float groundCheckOffset = 0.1f;
 
     [SerializeField] private InputActionReference move;
     [SerializeField] private InputActionReference jump;
