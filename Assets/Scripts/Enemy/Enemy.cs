@@ -5,9 +5,11 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent), typeof(Damageable), typeof(Knockable))]
-[RequireComponent(typeof(Explosive))]
+[RequireComponent(typeof(Explosive), typeof(CapsuleCollider))]
 public class Enemy : MonoBehaviour
 {
+    private const float VELOCITY_EPSILON = 0.1f;
+    
     [SerializeField] private float meleeDamage = 20f;
     [SerializeField] private float meleeKnockback = 10f;
     [SerializeField] private float meleeRange = 1.5f;
@@ -20,10 +22,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float selfDestructCooldown = 1f;
     [SerializeField] private float selfDestructCountdown = 2f;
 
+    [SerializeField] private float pathfindingUpdateRate = 0.005f;
+    [SerializeField] private float knockbackPropagationRadius = 2f;
+
     [SerializeField] private AudioSource fuseSound;
 
     private NavMeshAgent agent;
     private Transform target;
+    private CapsuleCollider collider;
 
     public Transform Target
     {
@@ -40,6 +46,7 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         agent = GetComponent<NavMeshAgent>();
+        collider = GetComponent<CapsuleCollider>();
     }
 
     private void OnDisable()
@@ -52,7 +59,7 @@ public class Enemy : MonoBehaviour
         while (true)
         {
             agent.destination = target.position;
-            yield return new WaitForSeconds(0.005f * Vector3.Distance(transform.position, target.position));
+            yield return new WaitForSeconds(pathfindingUpdateRate * Vector3.Distance(transform.position, target.position));
         }
     }
 
@@ -69,7 +76,10 @@ public class Enemy : MonoBehaviour
                 continue;
             }
 
-            if (!Physics.CapsuleCast(transform.position - 0.4f * Vector3.up, transform.position + 0.4f * Vector3.up, 0.4f, (target.position - transform.position).normalized, out RaycastHit hit, meleeRange, meleeLayerMask))
+            Vector3 sphereOffset = (0.5f * collider.height - collider.radius) * Vector3.up;
+            Vector3 point1 = transform.position - sphereOffset;
+            Vector3 point2 = transform.position + sphereOffset;
+            if (!Physics.CapsuleCast(point1, point2, collider.radius, (target.position - transform.position).normalized, out RaycastHit hit, meleeRange, meleeLayerMask))
             {
                 yield return null;
                 continue;
@@ -148,9 +158,7 @@ public class Enemy : MonoBehaviour
     public void KnockbackHandler(Vector3 impulse)
     {
         LayerMask enemyMask = LayerMask.GetMask(LayerMask.LayerToName(gameObject.layer));
-        IEnumerable<Enemy> nearbyEnemies = Physics.OverlapSphere(transform.position, 2f, enemyMask)
-            .Select(c => c.GetComponent<Enemy>())
-            .Where(e => e != null);
+        IEnumerable<Enemy> nearbyEnemies = ComponentUtility.GetComponentsInRadius<Enemy>(transform.position, knockbackPropagationRadius, enemyMask);
 
         foreach (Enemy enemy in nearbyEnemies)
         {
@@ -176,7 +184,7 @@ public class Enemy : MonoBehaviour
                 rigidbody.AddForce(impulse.Value, ForceMode.Impulse);
 
             yield return new WaitForFixedUpdate();
-            yield return new WaitUntil(() => rigidbody.velocity.magnitude < 0.1f);
+            yield return new WaitUntil(() => rigidbody.velocity.magnitude < VELOCITY_EPSILON);
             
             rigidbody.velocity = Vector3.zero;
             rigidbody.isKinematic = true;
