@@ -63,7 +63,7 @@ public class MovementController : MonoBehaviour
     {
         return Physics.OverlapSphere(
                 transform.position - (0.5f * collider.height - collider.radius + groundCheckOffset) * Vector3.up,  
-                collider.radius, 
+                0.9f * collider.radius, 
                 groundCheckMask)
             .Any();
     }

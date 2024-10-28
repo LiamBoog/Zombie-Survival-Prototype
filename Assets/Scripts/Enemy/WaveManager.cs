@@ -99,6 +99,9 @@ public class WaveManager : MonoBehaviour
                 if (!Physics.Linecast(player.position, hit.position + halfHeight * Vector3.up, losRayMask))
                     continue;
 
+                NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+                agent.enabled = true;
+                agent.Warp(hit.position);
                 enemy.transform.position = hit.position;
                 enemy.gameObject.SetActive(true);
                 enemy.Target = player;
@@ -109,7 +112,6 @@ public class WaveManager : MonoBehaviour
 
     private void OnReleaseEnemy(Enemy enemy)
     {
-        enemy.GetComponent<NavMeshAgent>().enabled = true;
         enemy.GetComponent<Rigidbody>().isKinematic = true;
         enemy.StopAllCoroutines();
         enemy.gameObject.SetActive(false);
