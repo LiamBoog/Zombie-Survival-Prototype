@@ -109,7 +109,7 @@ MonoBehaviour:
   camera: {fileID: 0}
   rocketVelocity: 30
   rayCastDistance: 100
-  cooldown: 0.5
+  cooldown: 0.4
 --- !u!82 &-680143421319563053
 AudioSource:
   m_ObjectHideFlags: 0
