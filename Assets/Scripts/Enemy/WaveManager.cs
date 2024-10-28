@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
@@ -40,6 +41,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private NavMeshSurface navMesh;
     [SerializeField] private Transform player;
     [SerializeField] private LayerMask losRayMask;
+    [SerializeField] private GameObject victoryUI;
+    [SerializeField] private InputActionAsset inputs;
 
     [SerializeField] private List<WaveInfo> waves;
 
@@ -117,12 +120,23 @@ public class WaveManager : MonoBehaviour
     private void StartNextWave()
     {
         if (waves.Count <= 0)
+        {
+            EndGame();
             return;
+        }
 
         WaveInfo wave = waves[0];
         waves.RemoveAt(0);
 
         StartCoroutine(SpawningRoutine(wave));
+    }
+
+    private void EndGame()
+    {
+        inputs.Disable();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        victoryUI.SetActive(true);
     }
 
     private IEnumerator SpawningRoutine(WaveInfo wave)
