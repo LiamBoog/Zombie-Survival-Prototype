@@ -8,8 +8,10 @@ public class Damageable : MonoBehaviour
 
     private float damage;
 
-    public event Action<float> Damaged; 
+    public event Action<float> HealthChanged; 
     public event Action Died;
+
+    private float HealthPercentage => (health - damage) / health;
 
     private void OnEnable()
     {
@@ -19,11 +21,17 @@ public class Damageable : MonoBehaviour
     public void Damage(float damage)
     {
         this.damage += damage;
-        Damaged?.Invoke((health - this.damage) / health);
+        HealthChanged?.Invoke(HealthPercentage);
 
         if (this.damage < health)
             return;
         
         Died?.Invoke();
+    }
+
+    public void Heal(float healing)
+    {
+        damage = Mathf.Max(0f, damage - healing);
+        HealthChanged?.Invoke(HealthPercentage);
     }
 }

@@ -1577,6 +1577,7 @@ GameObject:
   - component: {fileID: 6007739731361686255}
   - component: {fileID: 8159600816339376491}
   - component: {fileID: 6634473821188614078}
+  - component: {fileID: 588581030730907761}
   m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
@@ -1846,6 +1847,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathUI: {fileID: 5477617210006207781}
   inputs: {fileID: -944628639613478452, guid: 7a019ad006cb50a4fa0350cf7af918b6, type: 3}
+--- !u!114 &588581030730907761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8691633837938517919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c56c9d1309702014faf18a14deba723f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healPerSecond: 15
+  minHeal: 1
 --- !u!1001 &1532465778364612281
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -17,15 +17,15 @@ public class DamageIndicator : MonoBehaviour
         {
             vignette = postProcessing.profile.Add<Vignette>();
         }
-        GetComponent<Damageable>().Damaged += OnDamaged;
+        GetComponent<Damageable>().HealthChanged += OnHealthChanged;
     }
 
     private void OnDisable()
     {
-        GetComponent<Damageable>().Damaged -= OnDamaged;
+        GetComponent<Damageable>().HealthChanged -= OnHealthChanged;
     }
 
-    private void OnDamaged(float healthPercent)
+    private void OnHealthChanged(float healthPercent)
     {
         float damage = 1f - healthPercent;
         vignette.color.Override(damageGradient.Evaluate(damage));
