@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class WaveManager : MonoBehaviour
@@ -38,7 +39,7 @@ public class WaveManager : MonoBehaviour
     }
     
     [SerializeField] private Enemy enemyPrefab;
-    [SerializeField] private NavMeshSurface navMesh;
+    [FormerlySerializedAs("navMesh")] [SerializeField] private BoxCollider spawnArea;
     [SerializeField] private Transform player;
     [SerializeField] private LayerMask losRayMask;
     [SerializeField] private GameObject victoryUI;
@@ -73,13 +74,10 @@ public class WaveManager : MonoBehaviour
 
     private void OnGetEnemy(Enemy enemy)
     {
-        Vector3 offset = navMesh.transform.position;
-        Vector3 navMeshMin = offset + navMesh.navMeshData.sourceBounds.min;
-        Vector3 navMeshMax = offset + navMesh.navMeshData.sourceBounds.max;
+        Vector3 offset = spawnArea.transform.position;
+        Vector3 navMeshMin = offset + spawnArea.bounds.min;
+        Vector3 navMeshMax = offset + spawnArea.bounds.max;
         float halfHeight = 0.5f * enemy.GetComponent<NavMeshAgent>().height;
-
-        if (((1 << navMesh.gameObject.layer) & losRayMask) <= 0)
-            throw new Exception("NavMesh isn't on the right layer.");
 
         StartCoroutine(SpawnInRandomLocation());
 
