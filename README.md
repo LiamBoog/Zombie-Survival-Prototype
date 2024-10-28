@@ -1,5 +1,9 @@
 # NEX-Level-Gaming-Technical-Assessment
 
+This is a zomie-wave survival game. You have a rocket launcher (lmb) and grenade launcher (rmb). Try to survive all 5 waves. WASD to move. Space to jump (yes, you can rocket-jump).
+
+Good luck!
+
 ### Credits
 
 launch_sticky_bomb.wav by theplax -- https://freesound.org/s/560580/ -- License: Attribution 4.0
