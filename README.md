@@ -1,4 +1,4 @@
-# NEX-Level-Gaming-Technical-Assessment
+# Zombie-Survival-Prototype
 
 This is a zomie-wave survival game. You have a rocket launcher (lmb) and grenade launcher (rmb). Try to survive all 5 waves. WASD to move. Space to jump (yes, you can rocket-jump).
 
